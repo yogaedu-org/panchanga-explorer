@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.min.js"></script>
+</head>
+<body>
+<script type="module">
+import { VedicCalendarService } from './js/services/VedicCalendarService.js';
+
+const service = new VedicCalendarService();
+const testDate = new Date();
+const debugData = service.getFullDebugData(testDate);
+
+// Output raw JSON only
+document.body.innerHTML = '<pre>' + JSON.stringify(debugData, null, 2) + '</pre>';
+</script>
+</body>
+</html>
