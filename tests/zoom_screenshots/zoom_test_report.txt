@@ -1,0 +1,315 @@
+Zoom Level Test Report
+Generated: 2026-02-02T08:48:36.549085
+================================================================================
+
+Day_1:
+  Zoom: 21.31 days
+  Date Range: Feb 1, 08:45 PM — Feb 2, 08:45 PM
+  Tithi Blocks: 5
+  Nakshatra Blocks: 4
+  Issues:
+    - Tithi blocks (5) < 50% of expected (21)
+    - Nakshatra blocks (4) < 50% of expected (21)
+
+Day_2:
+  Zoom: 21.31 days
+  Date Range: Feb 1, 08:45 AM — Feb 3, 08:45 AM
+  Tithi Blocks: 6
+  Nakshatra Blocks: 6
+  Issues:
+    - Tithi blocks (6) < 50% of expected (21)
+    - Nakshatra blocks (6) < 50% of expected (21)
+
+Day_3:
+  Zoom: 21.31 days
+  Date Range: Jan 31, 08:45 PM — Feb 3, 08:45 PM
+  Tithi Blocks: 7
+  Nakshatra Blocks: 8
+  Issues:
+    - Tithi blocks (7) < 50% of expected (21)
+    - Nakshatra blocks (8) < 50% of expected (21)
+
+Day_4:
+  Zoom: 21.31 days
+  Date Range: Jan 31, 08:45 AM — Feb 4, 08:45 AM
+  Tithi Blocks: 11
+  Nakshatra Blocks: 12
+
+Day_5:
+  Zoom: 21.31 days
+  Date Range: Jan 30, 08:45 PM — Feb 4, 08:45 PM
+  Tithi Blocks: 9
+  Nakshatra Blocks: 12
+  Issues:
+    - Tithi blocks (9) < 50% of expected (21)
+
+Day_6:
+  Zoom: 21.31 days
+  Date Range: Jan 30, 08:45 AM — Feb 5, 08:45 AM
+  Tithi Blocks: 14
+  Nakshatra Blocks: 12
+
+Day_7:
+  Zoom: 21.31 days
+  Date Range: Jan 29, 08:45 PM — Feb 5, 08:45 PM
+  Tithi Blocks: 14
+  Nakshatra Blocks: 12
+
+Day_8:
+  Zoom: 21.31 days
+  Date Range: Jan 29, 08:45 AM — Feb 6, 08:45 AM
+  Tithi Blocks: 15
+  Nakshatra Blocks: 16
+
+Day_9:
+  Zoom: 21.31 days
+  Date Range: Jan 28, 08:45 PM — Feb 6, 08:45 PM
+  Tithi Blocks: 18
+  Nakshatra Blocks: 16
+
+Day_10:
+  Zoom: 21.31 days
+  Date Range: Jan 28, 08:45 AM — Feb 7, 08:45 AM
+  Tithi Blocks: 18
+  Nakshatra Blocks: 18
+
+Day_11:
+  Zoom: 21.31 days
+  Date Range: Jan 27, 08:45 PM — Feb 7, 08:45 PM
+  Tithi Blocks: 21
+  Nakshatra Blocks: 20
+
+Day_12:
+  Zoom: 21.31 days
+  Date Range: Jan 27, 08:45 AM — Feb 8, 08:45 AM
+  Tithi Blocks: 21
+  Nakshatra Blocks: 22
+
+Day_13:
+  Zoom: 21.31 days
+  Date Range: Jan 26, 08:45 PM — Feb 8, 08:45 PM
+  Tithi Blocks: 24
+  Nakshatra Blocks: 24
+
+Day_14:
+  Zoom: 21.31 days
+  Date Range: Jan 26, 08:45 AM — Feb 9, 08:45 AM
+  Tithi Blocks: 23
+  Nakshatra Blocks: 26
+
+Day_15:
+  Zoom: 21.31 days
+  Date Range: Jan 25, 08:45 PM — Feb 9, 08:45 PM
+  Tithi Blocks: 30
+  Nakshatra Blocks: 30
+
+Day_16:
+  Zoom: 21.31 days
+  Date Range: Jan 25, 08:45 AM — Feb 10, 08:45 AM
+  Tithi Blocks: 26
+  Nakshatra Blocks: 32
+
+Day_17:
+  Zoom: 21.31 days
+  Date Range: Jan 24, 08:45 PM — Feb 10, 08:45 PM
+  Tithi Blocks: 35
+  Nakshatra Blocks: 36
+
+Day_18:
+  Zoom: 21.31 days
+  Date Range: Jan 24, 08:45 AM — Feb 11, 08:45 AM
+  Tithi Blocks: 34
+  Nakshatra Blocks: 35
+
+Day_19:
+  Zoom: 21.31 days
+  Date Range: Jan 23, 08:45 PM — Feb 11, 08:45 PM
+  Tithi Blocks: 37
+  Nakshatra Blocks: 36
+
+Day_20:
+  Zoom: 21.31 days
+  Date Range: Jan 23, 08:45 AM — Feb 12, 08:45 AM
+  Tithi Blocks: 37
+  Nakshatra Blocks: 38
+
+Day_21:
+  Zoom: 21.31 days
+  Date Range: Jan 22, 08:45 PM — Feb 12, 08:45 PM
+  Tithi Blocks: 40
+  Nakshatra Blocks: 40
+
+Day_22:
+  Zoom: 21.31 days
+  Date Range: Jan 22, 08:45 AM — Feb 13, 08:45 AM
+  Tithi Blocks: 42
+  Nakshatra Blocks: 42
+
+Day_23:
+  Zoom: 21.31 days
+  Date Range: Jan 21, 08:45 PM — Feb 13, 08:45 PM
+  Tithi Blocks: 42
+  Nakshatra Blocks: 44
+
+Day_24:
+  Zoom: 21.31 days
+  Date Range: Jan 21, 08:45 AM — Feb 14, 08:45 AM
+  Tithi Blocks: 44
+  Nakshatra Blocks: 47
+
+Day_25:
+  Zoom: 21.31 days
+  Date Range: Jan 20, 08:45 PM — Feb 14, 08:45 PM
+  Tithi Blocks: 45
+  Nakshatra Blocks: 47
+
+Day_26:
+  Zoom: 21.31 days
+  Date Range: Jan 20, 08:45 AM — Feb 15, 08:45 AM
+  Tithi Blocks: 48
+  Nakshatra Blocks: 49
+
+Day_27:
+  Zoom: 21.31 days
+  Date Range: Jan 19, 08:45 PM — Feb 15, 08:45 PM
+  Tithi Blocks: 45
+  Nakshatra Blocks: 51
+
+Day_28:
+  Zoom: 21.31 days
+  Date Range: Jan 19, 08:45 AM — Feb 16, 08:45 AM
+  Tithi Blocks: 50
+  Nakshatra Blocks: 52
+
+Day_29:
+  Zoom: 21.31 days
+  Date Range: Jan 18, 08:45 PM — Feb 16, 08:45 PM
+  Tithi Blocks: 47
+  Nakshatra Blocks: 52
+
+Day_30:
+  Zoom: 21.31 days
+  Date Range: Jan 18, 08:45 AM — Feb 17, 08:45 AM
+  Tithi Blocks: 56
+  Nakshatra Blocks: 58
+
+Month_1:
+  Zoom: 21.31 days
+  Date Range: Jan 17, 08:45 PM — Feb 17, 08:45 PM
+  Tithi Blocks: 52
+  Nakshatra Blocks: 53
+
+Month_2:
+  Zoom: 21.31 days
+  Date Range: Jan 2, 08:45 PM — Mar 4, 08:45 PM
+  Tithi Blocks: 108
+  Nakshatra Blocks: 107
+
+Month_3:
+  Zoom: 21.31 days
+  Date Range: Dec 18, 08:45 PM — Mar 19, 08:45 PM
+  Tithi Blocks: 155
+  Nakshatra Blocks: 167
+
+Month_4:
+  Zoom: 21.31 days
+  Date Range: Dec 3, 08:45 PM — Apr 3, 08:45 PM
+  Tithi Blocks: 213
+  Nakshatra Blocks: 223
+
+Month_5:
+  Zoom: 21.31 days
+  Date Range: Nov 18, 08:45 PM — Apr 18, 08:45 PM
+  Tithi Blocks: 265
+  Nakshatra Blocks: 287
+
+Month_6:
+  Zoom: 21.31 days
+  Date Range: Nov 3, 08:45 PM — May 3, 08:45 PM
+  Tithi Blocks: 315
+  Nakshatra Blocks: 337
+
+Month_7:
+  Zoom: 21.31 days
+  Date Range: Oct 19, 08:45 PM — May 18, 08:45 PM
+  Tithi Blocks: 354
+  Nakshatra Blocks: 388
+
+Month_8:
+  Zoom: 21.31 days
+  Date Range: Oct 4, 08:45 PM — Jun 2, 08:45 PM
+  Tithi Blocks: 419
+  Nakshatra Blocks: 445
+
+Month_9:
+  Zoom: 21.31 days
+  Date Range: Sep 19, 08:45 PM — Jun 17, 08:45 PM
+  Tithi Blocks: 465
+  Nakshatra Blocks: 501
+
+Month_10:
+  Zoom: 21.31 days
+  Date Range: Sep 4, 08:45 PM — Jul 2, 08:45 PM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_1:
+  Zoom: 21.31 days
+  Date Range: Aug 20, 08:45 PM — Jul 17, 08:45 PM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_2:
+  Zoom: 21.31 days
+  Date Range: Feb 19, 08:45 AM — Jan 16, 08:45 AM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_3:
+  Zoom: 21.31 days
+  Date Range: Aug 20, 08:45 PM — Jul 17, 08:45 PM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_4:
+  Zoom: 21.31 days
+  Date Range: Feb 20, 08:45 AM — Jan 16, 08:45 AM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_5:
+  Zoom: 21.31 days
+  Date Range: Aug 21, 08:45 PM — Jul 16, 08:45 PM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_6:
+  Zoom: 21.31 days
+  Date Range: Feb 20, 08:45 AM — Jan 15, 08:45 AM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_7:
+  Zoom: 21.31 days
+  Date Range: Aug 21, 08:45 PM — Jul 16, 08:45 PM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_8:
+  Zoom: 21.31 days
+  Date Range: Feb 20, 08:45 AM — Jan 15, 08:45 AM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_9:
+  Zoom: 21.31 days
+  Date Range: Aug 21, 08:45 PM — Jul 16, 08:45 PM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+
+Year_10:
+  Zoom: 21.31 days
+  Date Range: Feb 20, 08:45 AM — Jan 15, 08:45 AM
+  Tithi Blocks: 502
+  Nakshatra Blocks: 501
+

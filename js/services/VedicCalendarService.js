@@ -5,10 +5,201 @@
  * Uses astronomy-engine library for accurate planetary positions.
  */
 
+import { Profiler } from '../utils/Profiler.js';
+
 export class VedicCalendarService {
     constructor() {
         this.LAHIRI_AYANAMSA_2000 = 23.8506;
         this.AYANAMSA_RATE_PER_YEAR = 0.0139713;
+
+        // Year-based cache for tithi/nakshatra boundaries (GH #9)
+        // Structure: { year: { tithis: [...], nakshatras: [...], newMoons: [...] } }
+        this.yearCache = {};
+    }
+
+    /**
+     * Ensure cache is built for a given year (lazy loading)
+     * @param {number} year - Calendar year to cache
+     */
+    ensureYearCached(year) {
+        if (this.yearCache[year]) {
+            return; // Already cached
+        }
+
+        Profiler.start(`buildYearCache-${year}`);
+        this.yearCache[year] = this.buildYearCache(year);
+        Profiler.end(`buildYearCache-${year}`);
+
+        console.log(`VedicCalendarService: Cached year ${year} - ${this.yearCache[year].tithis.length} tithis, ${this.yearCache[year].nakshatras.length} nakshatras`);
+    }
+
+    /**
+     * Build complete cache for a calendar year
+     * Computes all tithi and nakshatra boundaries from Jan 1 to Dec 31
+     * @param {number} year - Calendar year
+     * @returns {Object} Cache object with tithis and nakshatras arrays
+     */
+    buildYearCache(year) {
+        const cache = {
+            tithis: [],
+            nakshatras: [],
+            newMoons: [],
+            fullMoons: []
+        };
+
+        // Start from Dec 15 of previous year to ensure we catch tithis that span into Jan 1
+        const startDate = new Date(year - 1, 11, 15, 0, 0, 0);
+        // End at Jan 15 of next year to ensure we catch tithis that span from Dec 31
+        const endDate = new Date(year + 1, 0, 15, 23, 59, 59);
+
+        // ===== BUILD TITHI CACHE =====
+        let currentDate = new Date(startDate);
+        let lastTithiNumber = -1;
+
+        while (currentDate < endDate) {
+            const tithi = this.getTithi(currentDate);
+
+            if (tithi.number !== lastTithiNumber) {
+                // Tithi transition - find exact boundary
+                const tithiStart = this.findTithiStartTimeUncached(currentDate);
+                const tithiEnd = this.findTithiEndTimeUncached(currentDate);
+
+                // Only include if it overlaps with our target year
+                const tithiYear = tithiStart.getFullYear();
+                const tithiEndYear = tithiEnd.getFullYear();
+
+                if (tithiYear === year || tithiEndYear === year ||
+                    (tithiYear < year && tithiEndYear > year)) {
+                    cache.tithis.push({
+                        number: tithi.number,
+                        name: tithi.name,
+                        paksha: tithi.paksha,
+                        start: tithiStart,
+                        end: tithiEnd
+                    });
+                }
+
+                lastTithiNumber = tithi.number;
+                // Jump to just after this tithi ends
+                currentDate = new Date(tithiEnd.getTime() + 60000); // +1 minute
+            } else {
+                // Same tithi, advance by 6 hours
+                currentDate = new Date(currentDate.getTime() + 6 * 60 * 60 * 1000);
+            }
+        }
+
+        // ===== BUILD NAKSHATRA CACHE =====
+        currentDate = new Date(startDate);
+        let lastNakshatraNumber = -1;
+
+        while (currentDate < endDate) {
+            const nakshatra = this.getNakshatra(currentDate);
+
+            if (nakshatra.number !== lastNakshatraNumber) {
+                // Nakshatra transition - find exact boundary
+                const nakshatraStart = this.findNakshatraStartTimeUncached(currentDate);
+                const nakshatraEnd = this.findNakshatraEndTimeUncached(currentDate);
+
+                // Only include if it overlaps with our target year
+                const nakshatraYear = nakshatraStart.getFullYear();
+                const nakshatraEndYear = nakshatraEnd.getFullYear();
+
+                if (nakshatraYear === year || nakshatraEndYear === year ||
+                    (nakshatraYear < year && nakshatraEndYear > year)) {
+                    cache.nakshatras.push({
+                        number: nakshatra.number,
+                        name: nakshatra.name,
+                        start: nakshatraStart,
+                        end: nakshatraEnd
+                    });
+                }
+
+                lastNakshatraNumber = nakshatra.number;
+                // Jump to just after this nakshatra ends
+                currentDate = new Date(nakshatraEnd.getTime() + 60000); // +1 minute
+            } else {
+                // Same nakshatra, advance by 6 hours
+                currentDate = new Date(currentDate.getTime() + 6 * 60 * 60 * 1000);
+            }
+        }
+
+        // Sort by start time to ensure binary search works correctly
+        cache.tithis.sort((a, b) => a.start.getTime() - b.start.getTime());
+        cache.nakshatras.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+        return cache;
+    }
+
+    /**
+     * Find tithi containing given date from cache using binary search
+     * @param {Date} date - Date to look up
+     * @returns {Object|null} Cached tithi entry or null if not found
+     */
+    findTithiFromCache(date) {
+        const year = date.getFullYear();
+        this.ensureYearCached(year);
+
+        const tithis = this.yearCache[year].tithis;
+        const targetTime = date.getTime();
+
+        // Binary search for tithi containing this date
+        let low = 0;
+        let high = tithis.length - 1;
+
+        while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            const tithi = tithis[mid];
+
+            if (targetTime >= tithi.start.getTime() && targetTime < tithi.end.getTime()) {
+                return tithi; // Found it
+            } else if (targetTime < tithi.start.getTime()) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return null; // Not found in cache (edge case at year boundary)
+    }
+
+    /**
+     * Find nakshatra containing given date from cache using binary search
+     * @param {Date} date - Date to look up
+     * @returns {Object|null} Cached nakshatra entry or null if not found
+     */
+    findNakshatraFromCache(date) {
+        const year = date.getFullYear();
+        this.ensureYearCached(year);
+
+        const nakshatras = this.yearCache[year].nakshatras;
+        const targetTime = date.getTime();
+
+        // Binary search for nakshatra containing this date
+        let low = 0;
+        let high = nakshatras.length - 1;
+
+        while (low <= high) {
+            const mid = Math.floor((low + high) / 2);
+            const nakshatra = nakshatras[mid];
+
+            if (targetTime >= nakshatra.start.getTime() && targetTime < nakshatra.end.getTime()) {
+                return nakshatra; // Found it
+            } else if (targetTime < nakshatra.start.getTime()) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return null; // Not found in cache (edge case at year boundary)
+    }
+
+    /**
+     * Clear the year cache (useful for testing or memory management)
+     */
+    clearCache() {
+        this.yearCache = {};
+        console.log('VedicCalendarService: Cache cleared');
     }
 
     getAyanamsa(date) {
@@ -94,13 +285,11 @@ export class VedicCalendarService {
         };
     }
 
-    getTithi(date) {
-        const sun = this.getSunLongitude(date);
-        const moon = this.getMoonLongitude(date);
-        const angle = (moon.sidereal - sun.sidereal + 360) % 360;
-
-        const tithiNumber = Math.floor(angle / 12) + 1;
-        const tithiProgress = (angle % 12) / 12;
+    /**
+     * Get tithi name by number (1-30)
+     * Static lookup table for efficiency
+     */
+    getTithiName(tithiNumber) {
         const paksha = tithiNumber <= 15 ? 'Shukla' : 'Krishna';
         const tithiInPaksha = tithiNumber <= 15 ? tithiNumber : tithiNumber - 15;
 
@@ -111,9 +300,24 @@ export class VedicCalendarService {
         ];
 
         return {
-            number: tithiNumber,
-            paksha,
             name: tithiNames[tithiInPaksha - 1],
+            paksha
+        };
+    }
+
+    getTithi(date) {
+        const sun = this.getSunLongitude(date);
+        const moon = this.getMoonLongitude(date);
+        const angle = (moon.sidereal - sun.sidereal + 360) % 360;
+
+        const tithiNumber = Math.floor(angle / 12) + 1;
+        const tithiProgress = (angle % 12) / 12;
+        const tithiInfo = this.getTithiName(tithiNumber);
+
+        return {
+            number: tithiNumber,
+            paksha: tithiInfo.paksha,
+            name: tithiInfo.name,
             progress: tithiProgress,
             angle
         };
@@ -228,6 +432,202 @@ export class VedicCalendarService {
             if (midElongation < 180) {
                 low = mid;
             } else {
+                high = mid;
+            }
+        }
+
+        return new Date((low.getTime() + high.getTime()) / 2);
+    }
+
+    /**
+     * Find when current tithi started (uses cache when available)
+     * Falls back to binary search if not in cache
+     */
+    findTithiStartTime(date) {
+        Profiler.start('findTithiStartTime');
+
+        // Try cache first
+        const cached = this.findTithiFromCache(date);
+        if (cached) {
+            Profiler.end('findTithiStartTime');
+            return cached.start;
+        }
+
+        // Fallback to binary search
+        const result = this.findTithiStartTimeUncached(date);
+        Profiler.end('findTithiStartTime');
+        return result;
+    }
+
+    /**
+     * Find tithi start time using binary search (no cache)
+     * Used internally by buildYearCache
+     */
+    findTithiStartTimeUncached(date) {
+        const currentTithi = this.getTithi(date);
+        const currentTithiNumber = currentTithi.number;
+
+        // Search backwards up to 26 hours (max tithi duration)
+        let low = new Date(date.getTime() - 26 * 60 * 60 * 1000);
+        let high = date;
+
+        // Find the exact moment when tithi number changed to current
+        while ((high - low) > 60000) { // Within 1 minute
+            const mid = new Date((low.getTime() + high.getTime()) / 2);
+            const midTithi = this.getTithi(mid);
+
+            if (midTithi.number === currentTithiNumber) {
+                // Still in current tithi, search earlier
+                high = mid;
+            } else {
+                // Different tithi, search later
+                low = mid;
+            }
+        }
+
+        return new Date((low.getTime() + high.getTime()) / 2);
+    }
+
+    /**
+     * Find when current tithi will end (uses cache when available)
+     * Falls back to binary search if not in cache
+     */
+    findTithiEndTime(date) {
+        Profiler.start('findTithiEndTime');
+
+        // Try cache first
+        const cached = this.findTithiFromCache(date);
+        if (cached) {
+            Profiler.end('findTithiEndTime');
+            return cached.end;
+        }
+
+        // Fallback to binary search
+        const result = this.findTithiEndTimeUncached(date);
+        Profiler.end('findTithiEndTime');
+        return result;
+    }
+
+    /**
+     * Find tithi end time using binary search (no cache)
+     * Used internally by buildYearCache
+     */
+    findTithiEndTimeUncached(date) {
+        const currentTithi = this.getTithi(date);
+        const currentTithiNumber = currentTithi.number;
+
+        // Search forwards up to 26 hours (max tithi duration)
+        let low = date;
+        let high = new Date(date.getTime() + 26 * 60 * 60 * 1000);
+
+        // Find the exact moment when tithi number will change
+        while ((high - low) > 60000) { // Within 1 minute
+            const mid = new Date((low.getTime() + high.getTime()) / 2);
+            const midTithi = this.getTithi(mid);
+
+            if (midTithi.number === currentTithiNumber) {
+                // Still in current tithi, search later
+                low = mid;
+            } else {
+                // Different tithi, search earlier
+                high = mid;
+            }
+        }
+
+        return new Date((low.getTime() + high.getTime()) / 2);
+    }
+
+    /**
+     * Find when current nakshatra started (uses cache when available)
+     * Falls back to binary search if not in cache
+     */
+    findNakshatraStartTime(date) {
+        Profiler.start('findNakshatraStartTime');
+
+        // Try cache first
+        const cached = this.findNakshatraFromCache(date);
+        if (cached) {
+            Profiler.end('findNakshatraStartTime');
+            return cached.start;
+        }
+
+        // Fallback to binary search
+        const result = this.findNakshatraStartTimeUncached(date);
+        Profiler.end('findNakshatraStartTime');
+        return result;
+    }
+
+    /**
+     * Find nakshatra start time using binary search (no cache)
+     * Used internally by buildYearCache
+     */
+    findNakshatraStartTimeUncached(date) {
+        const currentNakshatra = this.getNakshatra(date);
+        const currentNakshatraNumber = currentNakshatra.number;
+
+        // Search backwards up to 25 hours (max nakshatra duration)
+        let low = new Date(date.getTime() - 25 * 60 * 60 * 1000);
+        let high = date;
+
+        // Find the exact moment when nakshatra number changed to current
+        while ((high - low) > 60000) { // Within 1 minute
+            const mid = new Date((low.getTime() + high.getTime()) / 2);
+            const midNakshatra = this.getNakshatra(mid);
+
+            if (midNakshatra.number === currentNakshatraNumber) {
+                // Still in current nakshatra, search earlier
+                high = mid;
+            } else {
+                // Different nakshatra, search later
+                low = mid;
+            }
+        }
+
+        return new Date((low.getTime() + high.getTime()) / 2);
+    }
+
+    /**
+     * Find when current nakshatra will end (uses cache when available)
+     * Falls back to binary search if not in cache
+     */
+    findNakshatraEndTime(date) {
+        Profiler.start('findNakshatraEndTime');
+
+        // Try cache first
+        const cached = this.findNakshatraFromCache(date);
+        if (cached) {
+            Profiler.end('findNakshatraEndTime');
+            return cached.end;
+        }
+
+        // Fallback to binary search
+        const result = this.findNakshatraEndTimeUncached(date);
+        Profiler.end('findNakshatraEndTime');
+        return result;
+    }
+
+    /**
+     * Find nakshatra end time using binary search (no cache)
+     * Used internally by buildYearCache
+     */
+    findNakshatraEndTimeUncached(date) {
+        const currentNakshatra = this.getNakshatra(date);
+        const currentNakshatraNumber = currentNakshatra.number;
+
+        // Search forwards up to 25 hours (max nakshatra duration)
+        let low = date;
+        let high = new Date(date.getTime() + 25 * 60 * 60 * 1000);
+
+        // Find the exact moment when nakshatra number will change
+        while ((high - low) > 60000) { // Within 1 minute
+            const mid = new Date((low.getTime() + high.getTime()) / 2);
+            const midNakshatra = this.getNakshatra(mid);
+
+            if (midNakshatra.number === currentNakshatraNumber) {
+                // Still in current nakshatra, search later
+                low = mid;
+            } else {
+                // Different nakshatra, search earlier
                 high = mid;
             }
         }
