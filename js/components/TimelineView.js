@@ -213,7 +213,16 @@ export function TimelineView(currentTime, panchanga, service, zoomValue = 1.00, 
     // Start from the beginning of visible range and iterate forward
     let tithiScanTime = new Date(startTimeMs);
     let iterations = 0;
-    const maxIterations = 500; // Safety limit for very long time ranges
+    // Safety limit for very long time ranges (GH #12). A fixed cap of 500
+    // silently truncated rendering for anything beyond ~1.4 years, since
+    // measured tithi durations run well under the nominal ~1 day (as short
+    // as ~0.73 days in this dataset). Scale the cap to the requested range
+    // (1.5x margin) so common multi-year zoom levels render in full, but
+    // keep a hard ceiling -- each iteration calls the ephemeris service
+    // several times, so an unbounded cap turns a pathological zoom value
+    // (e.g. tens of thousands of days) into a multi-minute hang instead of
+    // a merely-truncated render.
+    const maxIterations = Math.min(2000, Math.max(500, Math.ceil(zoomValue * 1.5) + 50));
 
     while (tithiScanTime.getTime() < endTimeMs && iterations < maxIterations) {
         iterations++;
