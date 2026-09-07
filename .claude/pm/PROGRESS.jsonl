@@ -1,0 +1,1 @@
+{"ts": "2026-09-07T01:42:39Z", "issue": 2, "repo": "panchanga-explorer", "type": "bugfix", "digest": "DebugView showed raw UTC toISOString() timestamp; now formats in location.tz to match main view convention. Regression test tests/test_debug_view_local_time.py. Commit 36c47cb on branch swarm/20260907-2 (not pushed)."}
