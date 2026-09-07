@@ -1,8 +1,15 @@
 import { Profiler } from '../utils/Profiler.js';
 
-export function DebugView(debugData) {
+export function DebugView(debugData, location) {
     // Store the JSON string for clipboard copy
     const jsonData = JSON.stringify(debugData, null, 2);
+
+    // debugData.timestamp is UTC (toISOString) -- display it in the
+    // selected location's timezone, matching the "Date/Time" field on
+    // the main view, instead of raw UTC (issue #2).
+    const localTimestamp = location?.tz
+        ? new Date(debugData.timestamp).toLocaleString('en-US', { timeZone: location.tz, dateStyle: 'full', timeStyle: 'medium' }) + ` (${location.tz})`
+        : new Date(debugData.timestamp).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'medium' });
 
     // Get profiler data
     const profilerData = Profiler.getSummaryData();
@@ -63,7 +70,7 @@ export function DebugView(debugData) {
             <div class="bg-gray-50 rounded-lg p-4">
                 <h3 class="font-semibold text-gray-800 mb-3">Timestamp & Ayanamsa</h3>
                 <div class="space-y-2 text-sm">
-                    <p><strong>Time:</strong> ${debugData.timestamp}</p>
+                    <p><strong>Time:</strong> ${localTimestamp}</p>
                     <p><strong>Lahiri Ayanamsa:</strong> ${debugData.ayanamsa.toFixed(4)}°</p>
                     <p><strong>Source:</strong> ${debugData.calculationSource?.sun || 'unknown'}</p>
                 </div>
