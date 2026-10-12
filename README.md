@@ -2,6 +2,8 @@
 
 An educational web application for understanding Vedic timekeeping systems.
 
+> **Start here:** run the app via [Quick Start](#quick-start), read [CONTEXT.md](CONTEXT.md) for how it works, [CALCULATIONS.md](CALCULATIONS.md) for the astronomy, and [NOTES.md](NOTES.md) for verification research.
+
 ## Features
 
 - Real-time Panchanga calculations (Tithi, Nakshatra, Masa)

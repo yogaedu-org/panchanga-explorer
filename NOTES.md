@@ -45,10 +45,10 @@ Verify against authoritative sources (DrikPanchang.com, Prokerala.com, AstroSage
 
 #### Root Cause Analysis
 
-From CONTEXT.md line 192:
+From CONTEXT.md "Masa (Lunar Month) Calculation" section:
 > "**Note**: Masa changes at new moon, not at rashi boundary. Requires detecting new moon events for precise masa transitions."
 
-And from CONTEXT.md "Known Issues & Limitations" section (line 275):
+And from CONTEXT.md "Known Issues & Limitations" section:
 > "1. **Masa calculation** - Current implementation uses sun's rashi, should detect new moon events"
 
 **The current implementation is a known simplification that doesn't match real panchanga calculations.**

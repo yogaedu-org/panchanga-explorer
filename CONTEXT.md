@@ -93,20 +93,30 @@ Implemented as a multi-band timeline (`js/components/TimelineView.js`), centered
 panchanga-explorer/
 ├── index.html                          # Main app shell
 ├── CONTEXT.md                          # This file
-├── README.md                           # User-facing documentation
+├── README.md                           # User-facing documentation (start here)
+├── CALCULATIONS.md                     # Calculation methodology
+├── NOTES.md                            # Verification research notes
+├── index-split.html                    # Split-view prototype shell
+├── api.html                            # Raw JSON data endpoint
+├── tests/                              # Playwright tests + check_doc_links.py
 ├── js/
 │   ├── services/
 │   │   └── VedicCalendarService.js    # Core astronomical calculations
 │   ├── components/
 │   │   ├── EducationalOverview.js     # Landing page component
 │   │   ├── MainApp.js                 # Main application container
+│   │   ├── MainAppSplit.js            # Split-view application container
 │   │   ├── ComparisonView.js          # Side-by-side calendar comparison
 │   │   ├── OrbitalView.js             # Geometric sun-moon visualization
 │   │   ├── TimelineView.js            # Temporal progress bars
 │   │   └── DebugView.js               # Developer debug data
-│   └── main.js                        # App initialization & state management
-└── styles/
-    └── main.css                        # Tailwind utilities + custom styles
+│   ├── utils/
+│   │   └── Profiler.js                # Performance profiling spans
+│   ├── main.js                        # App initialization & state management
+│   └── main-split.js                  # Split-view initialization & timeline zoom handlers
+```
+
+Styling comes from Tailwind utility classes in the HTML shells; there is no separate stylesheet.
 
 ### Why This Structure?
 
@@ -361,7 +371,7 @@ No build step, no npm install, just serve and code!
 
 ---
 
-**Last Updated**: January 2026  
+**Last Updated**: October 2026  
 **Version**: 1.0.0-alpha
 
 This CONTEXT.md file is designed to:
