@@ -50,6 +50,17 @@ Temporal comparison showing:
 - Current tithi progress (start to end)
 - Explanation of why tithis "float" across solar days
 
+Implemented as a multi-band timeline (`js/components/TimelineView.js`), centered on the calculation time:
+- **Zoom**: visible range is a zoom value (stored in days) with a unit selector (Year, Month, Day, Hour, Min); `−`/`+` buttons and a numeric input; default 1 day; the visible start/end is shown in the header
+- **Time labels**: row above the bands, tick spacing follows the unit (months, days, hours, minutes, seconds); label thinning drops overlapping labels at wide zooms
+- **Solar gradient**: day/night colour gradient (indigo night, yellow day, dawn 6-7am, dusk 5-6pm); fixed-hour estimate, not real sunrise/sunset
+- **Lunar band**: gradient from Moon illumination (Sun-Moon elongation), "Day N / 29.5" label, black lines at the previous/next new moon
+- **Tithi band**: one block per tithi in the visible range, name shown when the block is wide enough, current tithi in a darker shade
+- **Nakshatra band**: same as the tithi band, for nakshatras
+- **Current-time marker**: red vertical line at the center spanning all bands
+- **Info panel**: current tithi (n/30) and nakshatra (n/27) with percent complete
+- No hover tooltips; block boundaries are read from the band positions
+
 #### Debug View
 **Critical for development and verification:**
 - Complete calculation breakdown
