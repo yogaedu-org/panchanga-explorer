@@ -45,10 +45,10 @@ Verify against authoritative sources (DrikPanchang.com, Prokerala.com, AstroSage
 
 #### Root Cause Analysis
 
-From CONTEXT.md line 192:
+From CONTEXT.md "Masa (Lunar Month) Calculation" section:
 > "**Note**: Masa changes at new moon, not at rashi boundary. Requires detecting new moon events for precise masa transitions."
 
-And from CONTEXT.md "Known Issues & Limitations" section (line 275):
+And from CONTEXT.md "Known Issues & Limitations" section:
 > "1. **Masa calculation** - Current implementation uses sun's rashi, should detect new moon events"
 
 **The current implementation is a known simplification that doesn't match real panchanga calculations.**
@@ -136,5 +136,30 @@ The actual lunar month (masa) system:
 
 ### Status
 ✅ **Masa calculation now correct** - using proper amanta system with full moon nakshatra detection
+
+---
+
+## 2026-10-12 - Timeline View Features (issue #13)
+
+### Summary
+Documented what `js/components/TimelineView.js` actually does (CONTEXT.md "Timeline View" was still the original two-bar description). Docs-only change; ground truth is the code.
+
+### Features (verified in code)
+- Four bands, top to bottom: Solar, Lunar, Tithi, Nakshatra; all centered on the calculation time
+- Zoom value is always stored in days; unit selector (Year/Month/Day/Hour/Min) only changes tick spacing and the +/- step (`window.adjustTimelineZoom`, `setTimelineZoom`, `setTimelineUnit` in `js/main-split.js`)
+- Zoom state defaults: 1.00 day; minimum 0.001 day via buttons, rounded to 3 decimals; numeric input accepts any positive number
+- Time label row above the bands; label thinning when labels would be closer than ~5% of the width (GH #11)
+- Solar gradient: 48 samples; day/night from a fixed-hour estimate (full day 7am-5pm, dawn 6-7am, dusk 5-6pm)
+- Lunar band: 24-sample gradient from Moon illumination `(1 - cos(elongation)) / 2`; "Day N / 29.5" label; black lines at new moons
+- Tithi and Nakshatra bands: one block per item in the visible range, current item in a darker shade, name hidden when the block is under 5% of the width
+- Red center line marks the calculation time across all bands
+- Profiler spans: `TimelineView-total`, `tithi-iteration`, `nakshatra-iteration`
+
+### Known Limits (verified in code)
+- Solar band is not location-aware; sunrise/sunset is a fixed-hour estimate (TODO in code)
+- Lunar band draws only the lunar month containing the center time (previous to next new moon)
+- No hover tooltips or click handling on the bands
+- Gradient sample counts are fixed, not scaled to zoom (see issue #10)
+- Tithi/nakshatra scan cost grows with the number of blocks in range (several ephemeris searches per block); the scan loops have a safety iteration limit (see issue #12)
 
 ---

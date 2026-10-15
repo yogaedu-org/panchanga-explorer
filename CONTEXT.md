@@ -50,6 +50,17 @@ Temporal comparison showing:
 - Current tithi progress (start to end)
 - Explanation of why tithis "float" across solar days
 
+Implemented as a multi-band timeline (`js/components/TimelineView.js`), centered on the calculation time:
+- **Zoom**: visible range is a zoom value (stored in days) with a unit selector (Year, Month, Day, Hour, Min); `−`/`+` buttons and a numeric input; default 1 day; the visible start/end is shown in the header
+- **Time labels**: row above the bands, tick spacing follows the unit (months, days, hours, minutes, seconds); label thinning drops overlapping labels at wide zooms
+- **Solar gradient**: day/night colour gradient (indigo night, yellow day, dawn 6-7am, dusk 5-6pm); fixed-hour estimate, not real sunrise/sunset
+- **Lunar band**: gradient from Moon illumination (Sun-Moon elongation), "Day N / 29.5" label, black lines at the previous/next new moon
+- **Tithi band**: one block per tithi in the visible range, name shown when the block is wide enough, current tithi in a darker shade
+- **Nakshatra band**: same as the tithi band, for nakshatras
+- **Current-time marker**: red vertical line at the center spanning all bands
+- **Info panel**: current tithi (n/30) and nakshatra (n/27) with percent complete
+- No hover tooltips; block boundaries are read from the band positions
+
 #### Debug View
 **Critical for development and verification:**
 - Complete calculation breakdown
@@ -82,20 +93,30 @@ Temporal comparison showing:
 panchanga-explorer/
 ├── index.html                          # Main app shell
 ├── CONTEXT.md                          # This file
-├── README.md                           # User-facing documentation
+├── README.md                           # User-facing documentation (start here)
+├── CALCULATIONS.md                     # Calculation methodology
+├── NOTES.md                            # Verification research notes
+├── index-split.html                    # Split-view prototype shell
+├── api.html                            # Raw JSON data endpoint
+├── tests/                              # Playwright tests + check_doc_links.py
 ├── js/
 │   ├── services/
 │   │   └── VedicCalendarService.js    # Core astronomical calculations
 │   ├── components/
 │   │   ├── EducationalOverview.js     # Landing page component
 │   │   ├── MainApp.js                 # Main application container
+│   │   ├── MainAppSplit.js            # Split-view application container
 │   │   ├── ComparisonView.js          # Side-by-side calendar comparison
 │   │   ├── OrbitalView.js             # Geometric sun-moon visualization
 │   │   ├── TimelineView.js            # Temporal progress bars
 │   │   └── DebugView.js               # Developer debug data
-│   └── main.js                        # App initialization & state management
-└── styles/
-    └── main.css                        # Tailwind utilities + custom styles
+│   ├── utils/
+│   │   └── Profiler.js                # Performance profiling spans
+│   ├── main.js                        # App initialization & state management
+│   └── main-split.js                  # Split-view initialization & timeline zoom handlers
+```
+
+Styling comes from Tailwind utility classes in the HTML shells; there is no separate stylesheet.
 
 ### Why This Structure?
 
@@ -350,7 +371,7 @@ No build step, no npm install, just serve and code!
 
 ---
 
-**Last Updated**: January 2026  
+**Last Updated**: October 2026  
 **Version**: 1.0.0-alpha
 
 This CONTEXT.md file is designed to:
