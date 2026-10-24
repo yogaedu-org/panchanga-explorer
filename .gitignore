@@ -20,3 +20,8 @@ Thumbs.db
 
 # Node modules (if any)
 node_modules/
+
+# estate sync 2026-10-23
+.claude/worktrees/
+graphify-out/cache/
+.claude/settings.json.bak-*
