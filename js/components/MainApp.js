@@ -36,7 +36,7 @@ export function MainApp(state, service) {
     } else if (activeView === 'timeline') {
         visualizationContent = TimelineView(currentTime, { tithi, nakshatra, masa }, service, state.timelineZoom || 1.00, state.timelineUnit || 'day');
     } else if (activeView === 'debug') {
-        visualizationContent = DebugView(debugData);
+        visualizationContent = DebugView(debugData, location);
     }
 
     return `

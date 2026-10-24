@@ -3,3 +3,5 @@
 {"ts": "2026-10-12T10:44:32Z", "agent": "swarm 20261012T154840-panchanga-explorer", "issue": 13, "status": "claimed", "note": "refresh CONTEXT/NOTES with Timeline View; wave 22 sprint"}
 {"ts": "2026-10-12T10:47:57Z", "agent": "swarm 20261012T154840-panchanga-explorer", "issue": 13, "status": "done", "commit": "206f084", "branch": "swarm/20261012-wave"}
 {"ts": "2026-09-07T02:54:36Z", "agent": "swarm 20260907T083814-w3-panchanga-explorer", "issue": 10, "status": "claimed", "note": "scope adaptive solar gradient sampling"}
+{"ts": "2026-09-07T01:42:39Z", "agent": "swarm 20260907T064155-panchanga-explorer", "issue": 2, "status": "claimed", "note": "fix debug view UTC vs local time bug"}
+{"ts": "2026-09-07T01:42:39Z", "agent": "swarm 20260907T064155-panchanga-explorer", "issue": 2, "status": "done", "commit": "36c47cb", "branch": "swarm/20260907-2"}

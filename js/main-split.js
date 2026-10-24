@@ -74,7 +74,7 @@ function render() {
         });
     } else if (appState.activeTab === 'debug') {
         const debugData = service.getFullDebugData(appState.currentTime);
-        tabContent.innerHTML = DebugView(debugData);
+        tabContent.innerHTML = DebugView(debugData, appState.location);
     } else {
         tabContent.innerHTML = MainApp(appState, service);
     }
